@@ -4,8 +4,10 @@
  * See COPYING.txt for license details.
  */
 
+/** @var $block \Magento\Checkout\Block\Cart\Shipping */
+/** @var $checkoutConfig \Magento\Checkout\ViewModel\CheckoutConfig */
+$checkoutConfig = $block->getData('checkout_config_view_model');
 ?>
-<?php /** @var $block \Magento\Checkout\Block\Cart\Shipping */ ?>
 
 <div id="block-shipping"
      class="block shipping"
@@ -34,7 +36,7 @@
             }
         </script>
         <script>
-            window.checkoutConfig = <?= /* @noEscape */ $block->getSerializedCheckoutConfig() ?>;
+            window.checkoutConfig = <?= /* @noEscape */ $checkoutConfig->getSerializedCheckoutConfig() ?>;
             window.customerData = window.checkoutConfig.customerData;
             window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
             require([

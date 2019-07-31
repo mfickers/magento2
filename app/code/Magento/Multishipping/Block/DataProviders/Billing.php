@@ -7,10 +7,9 @@ declare(strict_types=1);
 
 namespace Magento\Multishipping\Block\DataProviders;
 
+use Magento\Checkout\ViewModel\CheckoutConfig;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Checkout\Model\CompositeConfigProvider;
 use Magento\Customer\Model\Address\Config as AddressConfig;
-use Magento\Framework\Serialize\Serializer\Json as Serializer;
 use Magento\Quote\Model\Quote\Address;
 
 /**
@@ -26,28 +25,20 @@ class Billing implements ArgumentInterface
     private $addressConfig;
 
     /**
-     * @var CompositeConfigProvider
+     * @var CheckoutConfig
      */
-    private $configProvider;
+    private $checkoutConfig;
 
     /**
-     * @var Serializer
-     */
-    private $serializer;
-
-    /**
-     * @param AddressConfig $addressConfig
-     * @param CompositeConfigProvider $configProvider
-     * @param Serializer $serializer
+     * @param AddressConfig           $addressConfig
+     * @param CheckoutConfig          $checkoutConfig
      */
     public function __construct(
         AddressConfig $addressConfig,
-        CompositeConfigProvider $configProvider,
-        Serializer $serializer
+        CheckoutConfig $checkoutConfig
     ) {
         $this->addressConfig = $addressConfig;
-        $this->configProvider = $configProvider;
-        $this->serializer = $serializer;
+        $this->checkoutConfig = $checkoutConfig;
     }
 
     /**
@@ -66,11 +57,11 @@ class Billing implements ArgumentInterface
     /**
      * Returns serialized checkout config.
      *
-     * @return string
-     * @throws \InvalidArgumentException
+     * @return string|false
+     * @deprecated
      */
     public function getSerializedCheckoutConfigs(): string
     {
-        return $this->serializer->serialize($this->configProvider->getConfig());
+        return $this->checkoutConfig->getSerializedCheckoutConfig();
     }
 }

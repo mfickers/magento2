@@ -5,6 +5,8 @@
  */
 
 /** @var $block \Magento\Checkout\Block\Onepage */
+/** @var $checkoutConfig \Magento\Checkout\ViewModel\CheckoutConfig */
+$checkoutConfig = $block->getData('checkout_config_view_model');
 ?>
 <div id="checkout" data-bind="scope:'checkout'" class="checkout-container">
     <div id="checkout-loader" data-role="checkout-loader" class="loading-mask" data-mage-init='{"checkoutLoader": {}}'>
@@ -23,7 +25,7 @@
         }
     </script>
     <script>
-        window.checkoutConfig = <?= /* @noEscape */ $block->getSerializedCheckoutConfig() ?>;
+        window.checkoutConfig = <?= /* @noEscape */ $checkoutConfig->getSerializedCheckoutConfig() ?>;
         // Create aliases for customer.js model from customer module
         window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
         window.customerData = window.checkoutConfig.customerData;

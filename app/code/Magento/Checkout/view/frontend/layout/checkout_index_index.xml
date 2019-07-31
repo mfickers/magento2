@@ -10,6 +10,7 @@
         <referenceContainer name="content">
             <block class="Magento\Checkout\Block\Onepage" name="checkout.root" template="Magento_Checkout::onepage.phtml" cacheable="false">
                 <arguments>
+                    <argument name="checkout_config_view_model" xsi:type="object">Magento\Checkout\ViewModel\CheckoutConfig</argument>
                     <argument name="jsLayout" xsi:type="array">
                         <item name="types" xsi:type="array">
                             <item name="form.input" xsi:type="array">

@@ -17,40 +17,36 @@ class Shipping extends \Magento\Checkout\Block\Cart\AbstractCart
     protected $configProvider;
 
     /**
+     * @var \Magento\Checkout\ViewModel\CheckoutConfig
+     */
+    private $checkoutConfig;
+
+    /**
      * @var array|\Magento\Checkout\Block\Checkout\LayoutProcessorInterface[]
      */
     protected $layoutProcessors;
 
     /**
-     * @var \Magento\Framework\Serialize\Serializer\Json
-     */
-    private $serializer;
-
-    /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Customer\Model\Session $customerSession
-     * @param \Magento\Checkout\Model\Session $checkoutSession
-     * @param \Magento\Checkout\Model\CompositeConfigProvider $configProvider
-     * @param array $layoutProcessors
-     * @param array $data
-     * @param \Magento\Framework\Serialize\Serializer\Json|null $serializer
-     * @throws \RuntimeException
+     * @param \Magento\Customer\Model\Session                  $customerSession
+     * @param \Magento\Checkout\Model\Session                  $checkoutSession
+     * @param \Magento\Checkout\Model\CompositeConfigProvider  $configProvider
+     * @param \Magento\Checkout\ViewModel\CheckoutConfig       $checkoutConfig
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Checkout\Model\CompositeConfigProvider $configProvider,
+        \Magento\Checkout\ViewModel\CheckoutConfig $checkoutConfig,
         array $layoutProcessors = [],
-        array $data = [],
-        \Magento\Framework\Serialize\Serializer\Json $serializer = null
+        array $data = []
     ) {
         $this->configProvider = $configProvider;
+        $this->checkoutConfig = $checkoutConfig;
         $this->layoutProcessors = $layoutProcessors;
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->_isScopePrivate = true;
-        $this->serializer = $serializer ?: \Magento\Framework\App\ObjectManager::getInstance()
-            ->get(\Magento\Framework\Serialize\Serializer\Json::class);
     }
 
     /**
@@ -58,10 +54,11 @@ class Shipping extends \Magento\Checkout\Block\Cart\AbstractCart
      *
      * @return array
      * @codeCoverageIgnore
+     * @deprecated
      */
     public function getCheckoutConfig()
     {
-        return $this->configProvider->getConfig();
+        return $this->checkoutConfig->getCheckoutConfig();
     }
 
     /**
@@ -90,11 +87,14 @@ class Shipping extends \Magento\Checkout\Block\Cart\AbstractCart
     }
 
     /**
+     * Retrieve serialized checkout config.
+     *
      * @return bool|string
      * @since 100.2.0
+     * @deprecated
      */
     public function getSerializedCheckoutConfig()
     {
-        return json_encode($this->getCheckoutConfig(), JSON_HEX_TAG);
+        $this->checkoutConfig->getSerializedCheckoutConfig();
     }
 }

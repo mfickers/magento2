@@ -7,6 +7,7 @@ namespace Magento\Checkout\Block;
 
 /**
  * Onepage checkout block
+ *
  * @api
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -33,6 +34,11 @@ class Onepage extends \Magento\Framework\View\Element\Template
     protected $configProvider;
 
     /**
+     * @var \Magento\Checkout\ViewModel\CheckoutConfig
+     */
+    private $checkoutConfig;
+
+    /**
      * @var array|\Magento\Checkout\Block\Checkout\LayoutProcessorInterface[]
      */
     protected $layoutProcessors;
@@ -44,11 +50,12 @@ class Onepage extends \Magento\Framework\View\Element\Template
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Framework\Data\Form\FormKey $formKey
-     * @param \Magento\Checkout\Model\CompositeConfigProvider $configProvider
-     * @param array $layoutProcessors
-     * @param array $data
-     * @param \Magento\Framework\Serialize\Serializer\Json $serializer
+     * @param \Magento\Framework\Data\Form\FormKey             $formKey
+     * @param \Magento\Checkout\Model\CompositeConfigProvider  $configProvider
+     * @param \Magento\Checkout\ViewModel\CheckoutConfig       $checkoutConfig
+     * @param array                                            $layoutProcessors
+     * @param array                                            $data
+     * @param \Magento\Framework\Serialize\Serializer\Json     $serializer
      * @param \Magento\Framework\Serialize\SerializerInterface $serializerInterface
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -56,6 +63,7 @@ class Onepage extends \Magento\Framework\View\Element\Template
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\Data\Form\FormKey $formKey,
         \Magento\Checkout\Model\CompositeConfigProvider $configProvider,
+        \Magento\Checkout\ViewModel\CheckoutConfig $checkoutConfig,
         array $layoutProcessors = [],
         array $data = [],
         \Magento\Framework\Serialize\Serializer\Json $serializer = null,
@@ -66,6 +74,7 @@ class Onepage extends \Magento\Framework\View\Element\Template
         $this->_isScopePrivate = true;
         $this->jsLayout = isset($data['jsLayout']) && is_array($data['jsLayout']) ? $data['jsLayout'] : [];
         $this->configProvider = $configProvider;
+        $this->checkoutConfig = $checkoutConfig;
         $this->layoutProcessors = $layoutProcessors;
         $this->serializer = $serializerInterface ?: \Magento\Framework\App\ObjectManager::getInstance()
             ->get(\Magento\Framework\Serialize\Serializer\JsonHexTag::class);
@@ -99,10 +108,11 @@ class Onepage extends \Magento\Framework\View\Element\Template
      *
      * @return array
      * @codeCoverageIgnore
+     * @deprecated
      */
     public function getCheckoutConfig()
     {
-        return $this->configProvider->getConfig();
+        return $this->checkoutConfig->getCheckoutConfig();
     }
 
     /**
@@ -121,9 +131,10 @@ class Onepage extends \Magento\Framework\View\Element\Template
      *
      * @return bool|string
      * @since 100.2.0
+     * @deprecated
      */
     public function getSerializedCheckoutConfig()
     {
-        return  $this->serializer->serialize($this->getCheckoutConfig());
+        return $this->checkoutConfig->getSerializedCheckoutConfig();
     }
 }

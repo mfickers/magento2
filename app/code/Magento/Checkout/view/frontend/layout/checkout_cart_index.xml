@@ -26,6 +26,7 @@
                             </block>
                             <block class="Magento\Checkout\Block\Cart\Shipping" name="checkout.cart.shipping" as="shipping" template="Magento_Checkout::cart/shipping.phtml" after="checkout.cart.summary.title">
                                 <arguments>
+                                    <argument name="checkout_config_view_model" xsi:type="object">Magento\Checkout\ViewModel\CheckoutConfig</argument>
                                     <argument name="jsLayout" xsi:type="array">
                                         <item name="types" xsi:type="array">
                                             <item name="form.input" xsi:type="array">
