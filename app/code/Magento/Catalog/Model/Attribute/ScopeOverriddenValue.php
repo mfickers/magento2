@@ -156,6 +156,10 @@ class ScopeOverriddenValue
                     ->where('t.store_id IN (?)', $storeIds);
                 $selects[] = $select;
             }
+            
+            if(empty($selects)) {
+                return;
+            }
 
             $unionSelect = new \Magento\Framework\DB\Sql\UnionExpression(
                 $selects,
